@@ -1,20 +1,25 @@
 from collections import deque
 
-graph = [["O", " ", " ", "#", " "],
-         ["#", " ", " ", "#", " "],
-         ["X", "#", " ", " ", " "],
-         [" ", " ", " ", "#", " "],
-         [" ", " ", " ", "#", " "]]
+graph = [["#", "", " ", " ", " ", " ", "O"],
+         ["#", " ", " ", "#", "#", " ", " "],
+         ["X", "#", " ", "#", " ", " ", " "],
+         [" ", "#", " ", "#", " ", " ", "#"],
+         ["#", " ", " ", " ", " ", "#", "#"],
+         ["#", "#", " ", "#", " ", " ", "#"],
+         ["#", " ", " ", "#", " ", " ", "#"]]
 
 # Used a hashmap here but we could save memory by just checking if it is a . to see if we have been there
 # I will do this in the javascript version because tuples don't exist so I can't use a hashmap
 
 def pathFindBFS(graph):
     startCoord = [0, 0]
+    ############################
     for i in range(len(graph)):
         for j in range(len(graph[i])):
+            print(i, j, graph[i][j])
             if graph[i][j] == "O":
-                startCoord == [i, j] ## Coordinates look like [y, x]
+                startCoord = [i, j] ## Coordinates look like [y, x]
+    ###########################
     visited = {}
     queue = deque()
     queue.append([startCoord])
@@ -28,7 +33,8 @@ def pathFindBFS(graph):
         if graph[currentNode[-1][0]][currentNode[-1][1]] == "X":
             path = currentNode
             break
-        graph[currentNode[-1][0]][currentNode[-1][1]] = "."
+        if graph[currentNode[-1][0]][currentNode[-1][1]] != "O":
+            graph[currentNode[-1][0]][currentNode[-1][1]] = "."
         #Check for edge cases and add to queue
         hasleft = currentNode[-1][1] >= 1
         hasright = currentNode[-1][1] < len(graph[0]) - 1
@@ -59,6 +65,12 @@ def pathFindBFS(graph):
         if hastop:
             topSide = currentNode + [[currentNode[-1][0] - 1, currentNode[-1][1]]]
             queue.append(topSide)
+    print(path)
     for point in path:
-        graph[point[0]][point[1]] = "+"
+        if point != path[0] and point != path[-1]:
+            graph[point[0]][point[1]] = "+"
     return graph
+
+path = pathFindBFS(graph)
+for i in path:
+    print(i)
