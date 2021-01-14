@@ -9,7 +9,7 @@ class Rect {
     }
     show () {
         fill(this.colour)
-        rect(x*(window.innerWidth/2.54/10), y*(window.innerHeight/1.24/10), (window.innerWidth/2.54/10), (window.innerHeight/1.24/10))
+        rect(x*(window.innerWidth/3.81/10), y*(window.innerHeight/1.86/10), (window.innerWidth/3.81/10), (window.innerHeight/1.86/10))
     }
 }
 class Queue {
@@ -47,7 +47,7 @@ function setup() {
     buttonRun = createButton("Run")
     buttonRun.position(0,75)
     buttonRun.mousePressed(callBFS)
-    buttonClear = createButton("Clear")
+    buttonClear = createButton("Block remover")
     buttonClear.position(0,105)
     buttonClear.mousePressed(clearPen)
     buttonWall = createButton("Wall")
@@ -101,13 +101,13 @@ function canvMousePressed() {
     switch (type) {
         case 1:
             //mouseX mouse Y
-            x = (mouseX - (mouseX % 75)) / 75
-            y = (mouseY - (mouseY % 75)) / 75
+            x = (mouseX - (mouseX % 50)) / 50
+            y = (mouseY - (mouseY % 50)) / 50
             graph[y][x] = "#"
             break;
         case 2:
-            x = (mouseX - (mouseX % 75)) / 75
-            y = (mouseY - (mouseY % 75)) / 75
+            x = (mouseX - (mouseX % 50)) / 50
+            y = (mouseY - (mouseY % 50)) / 50
             for (i = 0; i < graph.length; i++) {
                 for (j = 0; j < graph[0].length; j++) {
                     if (graph[i][j] == "O")
@@ -117,8 +117,8 @@ function canvMousePressed() {
             graph[y][x] = "O"
             break;
         case 3:
-            x = (mouseX - (mouseX % 75)) / 75
-            y = (mouseY - (mouseY % 75)) / 75
+            x = (mouseX - (mouseX % 50)) / 50
+            y = (mouseY - (mouseY % 50)) / 50
             for (i = 0; i < graph.length; i++) {
                 for (j = 0; j < graph[0].length; j++) {
                     if (graph[i][j] == "X")
@@ -128,8 +128,8 @@ function canvMousePressed() {
             graph[y][x] = "X"
             break;
         default:
-            x = (mouseX - (mouseX % 75)) / 75
-            y = (mouseY - (mouseY % 75)) / 75
+            x = (mouseX - (mouseX % 50)) / 50
+            y = (mouseY - (mouseY % 50)) / 50
             graph[y][x] = " "
             break;
     }
@@ -158,40 +158,12 @@ function pathFindBFS () {
         side.push([curr[curr.length - 1][0], curr[curr.length - 1][1] - 1]);
         queue.enqueue(side);
     }
-    if (hasleft && hastop) {
-        if (graph[curr[curr.length - 1][0] - 1][curr[curr.length - 1][1] - 1] == " ")
-            graph[curr[curr.length - 1][0] - 1][curr[curr.length - 1][1] - 1] = "-";
-        let side1 = Array.from(curr);
-        side1.push([curr[curr.length - 1][0] - 1, curr[curr.length - 1][1] - 1]);
-        queue.enqueue(side1);
-    }
-    if (hasleft && hasbottom) {
-        if (graph[curr[curr.length - 1][0] + 1][curr[curr.length - 1][1] - 1] == " ")
-            graph[curr[curr.length - 1][0] + 1][curr[curr.length - 1][1] - 1] = "-";
-        let side2 = Array.from(curr);
-        side2.push([curr[curr.length - 1][0] + 1, curr[curr.length - 1][1] - 1]);
-        queue.enqueue(side2);
-    }
     if (hasright) {
         if (graph[curr[curr.length - 1][0]][curr[curr.length - 1][1] + 1] == " ")
             graph[curr[curr.length - 1][0]][curr[curr.length - 1][1] + 1] = "-";
         let side3 = Array.from(curr);
         side3.push([curr[curr.length - 1][0], curr[curr.length - 1][1] + 1]);
         queue.enqueue(side3);
-    }
-    if (hasright && hastop) {
-        if (graph[curr[curr.length - 1][0] - 1][curr[curr.length - 1][1] + 1] == " ")
-            graph[curr[curr.length - 1][0] - 1][curr[curr.length - 1][1] + 1] = "-";
-        let side4 = Array.from(curr);
-        side4.push([curr[curr.length - 1][0] - 1, curr[curr.length - 1][1] + 1]);
-        queue.enqueue(side4);
-    }
-    if (hasright && hasbottom) {
-        if (graph[curr[curr.length - 1][0] + 1][curr[curr.length - 1][1] + 1] == " ")
-            graph[curr[curr.length - 1][0] + 1][curr[curr.length - 1][1] + 1] = "-";
-        let side5 = Array.from(curr);
-        side5.push([curr[curr.length - 1][0] + 1, curr[curr.length - 1][1] + 1]);
-        queue.enqueue(side5);
     }
     if (hastop) {
         if (graph[curr[curr.length - 1][0] - 1][curr[curr.length - 1][1]] == " ")
@@ -207,18 +179,51 @@ function pathFindBFS () {
         side7.push([curr[curr.length - 1][0] + 1, curr[curr.length - 1][1]]);
         queue.enqueue(side7);
     }
+    if (hasleft && hastop) {
+        if (graph[curr[curr.length - 1][0] - 1][curr[curr.length - 1][1] - 1] == " ")
+            graph[curr[curr.length - 1][0] - 1][curr[curr.length - 1][1] - 1] = "-";
+        let side1 = Array.from(curr);
+        side1.push([curr[curr.length - 1][0] - 1, curr[curr.length - 1][1] - 1]);
+        queue.enqueue(side1);
+    }
+    if (hasleft && hasbottom) {
+        if (graph[curr[curr.length - 1][0] + 1][curr[curr.length - 1][1] - 1] == " ")
+            graph[curr[curr.length - 1][0] + 1][curr[curr.length - 1][1] - 1] = "-";
+        let side2 = Array.from(curr);
+        side2.push([curr[curr.length - 1][0] + 1, curr[curr.length - 1][1] - 1]);
+        queue.enqueue(side2);
+    }
+    if (hasright && hastop) {
+        if (graph[curr[curr.length - 1][0] - 1][curr[curr.length - 1][1] + 1] == " ")
+            graph[curr[curr.length - 1][0] - 1][curr[curr.length - 1][1] + 1] = "-";
+        let side4 = Array.from(curr);
+        side4.push([curr[curr.length - 1][0] - 1, curr[curr.length - 1][1] + 1]);
+        queue.enqueue(side4);
+    }
+    if (hasright && hasbottom) {
+        if (graph[curr[curr.length - 1][0] + 1][curr[curr.length - 1][1] + 1] == " ")
+            graph[curr[curr.length - 1][0] + 1][curr[curr.length - 1][1] + 1] = "-";
+        let side5 = Array.from(curr);
+        side5.push([curr[curr.length - 1][0] + 1, curr[curr.length - 1][1] + 1]);
+        queue.enqueue(side5);
+    }
 };
 
-var graph = [[" ", "", " ", "#", " ", " ", "O", " ", " ", "#"],
-                [" ", "#", " ", "#", "#", " ", " ", " #", "#", "#"],
-                ["X", "#", " ", "#", " ", " ", " ", " ", " ", "#"],
-                [" ", " ", " ", "#", " ", " ", "#", " ", " ", "#"],
-                [" ", "#", " ", " ", " ", "#", "#", " ", " ", "#"],
-                [" ", "#", " ", "#", " ", " ", "#", " ", " ", "#"],
-                [" ", " ", " ", "#", " ", " ", "#", " ", " ", "#"],
-                [" ", " ", " ", " ", " ", "#", "#", " ", " ", "#"],
-                ["#", "#", " ", "#", " ", " ", "#", " ", " ", "#"],
-                ["#", " ", " ", "#", " ", " ", "#", " ", "#", "#"]];
+var graph =     [["O", "", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "],
+                [" ", " ", " ", " ", " ", " ", " ", "  ", " ", " ", " ", " ", "  ", " ", " "],
+                [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "  ", " ", " "],
+                [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "  ", " ", " "],
+                [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "  ", " ", " "],
+                [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "  ", " ", " "],
+                [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "  ", " ", " "],
+                [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "  ", " ", " "],
+                [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "  ", " ", " "],
+                [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "  ", " ", " "],
+                [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "  ", " ", " "],
+                [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "  ", " ", " "],
+                [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "  ", " ", " "],
+                [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "  ", " ", " "],
+                [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "  ", " ", "X"]];
 
 function drawMatrix(graph) {
     for (i = 0; i < graph.length; i++) {
@@ -246,12 +251,12 @@ function drawMatrix(graph) {
                     fill("grey")
                     break;
             }
-            rect(j*75, i*75, 75, 75)
+            rect(j*50, i*50, 50, 50)
         }
     }
 }
 function windowResized() {
-    resizeCanvas(window.innerWidth/2.54, window.innerHeight/1.24);
+    resizeCanvas(window.innerWidth/3.81, window.innerHeight/1.86);
 }
 function wallPen() {
     type = 1;
@@ -268,10 +273,19 @@ function clearPen() {
 function reset() {
     path = null;
     queue.clear()
-    for (i = 0; i < graph.length; i++) {
-        for (j = 0; j < graph[0].length; j++) {
-            if (graph[i][j] == "." || graph[i][j] == "+" || graph[i][j] == "-")
-                graph[i][j] = " ";
-        }
-    }
+    graph = graph =     [["O", "", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "],
+                        [" ", " ", " ", " ", " ", " ", " ", "  ", " ", " ", " ", " ", "  ", " ", " "],
+                        [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "  ", " ", " "],
+                        [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "  ", " ", " "],
+                        [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "  ", " ", " "],
+                        [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "  ", " ", " "],
+                        [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "  ", " ", " "],
+                        [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "  ", " ", " "],
+                        [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "  ", " ", " "],
+                        [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "  ", " ", " "],
+                        [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "  ", " ", " "],
+                        [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "  ", " ", " "],
+                        [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "  ", " ", " "],
+                        [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "  ", " ", " "],
+                        [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "  ", " ", "X"]];
 }

@@ -44,27 +44,27 @@ def pathFindBFS(graph):
         if hasleft:
             leftSide = currentNode + [[currentNode[-1][0], currentNode[-1][1] - 1]]
             queue.append(leftSide)
-        if hasleft and hastop:
-            topleftSide = currentNode + [[currentNode[-1][0] - 1, currentNode[-1][1] - 1]]
-            queue.append(topleftSide)
-        if hasleft and hasbottom:
-            bottomleftSide = currentNode + [[currentNode[-1][0] + 1, currentNode[-1][1] - 1]]
-            queue.append(bottomleftSide)
         if hasright:
             rightSide = currentNode + [[currentNode[-1][0], currentNode[-1][1] + 1]]
             queue.append(rightSide)
-        if hasright and hastop:
-            toprightSide = currentNode + [[currentNode[-1][0] - 1, currentNode[-1][1] + 1]]
-            queue.append(topleftSide)
-        if hasright and hasbottom:
-            topleftSide = currentNode + [[currentNode[-1][0] + 1, currentNode[-1][1] + 1]]
-            queue.append(topleftSide)
         if hasbottom:
             bottomSide = currentNode + [[currentNode[-1][0] + 1, currentNode[-1][1]]]
             queue.append(bottomSide)
         if hastop:
             topSide = currentNode + [[currentNode[-1][0] - 1, currentNode[-1][1]]]
             queue.append(topSide)
+        if hasright and hastop:
+            toprightSide = currentNode + [[currentNode[-1][0] - 1, currentNode[-1][1] + 1]]
+            queue.append(topleftSide)
+        if hasright and hasbottom:
+            topleftSide = currentNode + [[currentNode[-1][0] + 1, currentNode[-1][1] + 1]]
+            queue.append(topleftSide)
+        if hasleft and hastop:
+            topleftSide = currentNode + [[currentNode[-1][0] - 1, currentNode[-1][1] - 1]]
+            queue.append(topleftSide)
+        if hasleft and hasbottom:
+            bottomleftSide = currentNode + [[currentNode[-1][0] + 1, currentNode[-1][1] - 1]]
+            queue.append(bottomleftSide)
     print(path)
     for point in path:
         if point != path[0] and point != path[-1]:
