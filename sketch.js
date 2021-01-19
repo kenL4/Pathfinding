@@ -40,6 +40,7 @@ var queue = new Queue();
 var path = null;
 var mode = null;
 function setup() {
+    frameRate(120);
     let canv = createCanvas(window.innerWidth/2.54, window.innerHeight/1.24)
 	canv.position(0, 100);
 	canv.center("horizontal");
